@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <deploy>
-    <version>1.0.0</version>                  <!-- The version of this module -->
+	<description>Modul til kondemneringssager</description>
+    <version>1.0.0</version>                 
+	<!-- The version of this module -->
+	<param name="uninhabitable.skin_name">base</param>
+	<!-- <param name="uninhabitable.skin_name">skin_lolland</param> -->
+	
+    <copydir fromdir="[module:uninhabitable.dir]/internal/dist" todir="[cbinfo.wwwroot.dir]/modules/uninhabitable" />
+	<param name="module.uninhabitable.logo">/images/custom/Lolland9.png</param>
 </deploy>
