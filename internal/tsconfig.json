@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "target": "ES6",
+        "jsx": "react",
+        "lib": [ "ES2015", "ES2016" ,"DOM" ],
+        "module": "ES2015",
+        "moduleResolution": "Node",
+    },
+    "include": [
+        "src/**/*.ts",
+        "src/**/*.tsx",
+        "node_modules/minimap-types/lib/*.d.ts"
+    ],
+}

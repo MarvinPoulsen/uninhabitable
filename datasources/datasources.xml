@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datasources>
+    <endpoint endpointtype="[cbinfo.connection.lolland_postgis.type]" name="ep_lk_uninhabitable">
+        <connect>[cbinfo.connection.lolland_postgis.url]</connect>
+        <user>[cbinfo.connection.lolland_postgis.user]</user>
+        <pwd>[cbinfo.connection.lolland_postgis.pwd]</pwd>
+    </endpoint>
+    <datasource endpoint="ep_lk_uninhabitable" name="lk_uninhabitable_editor">
+        <!-- <debug>true</debug> -->
+        <table name="uninhabitable" pkcolumn="id" schema="byg_kondemnering"/>
+        <sql command="read-all">select * from byg_kondemnering.uninhabitable;</sql>
+        <sql command="insert-case">
+            insert into 
+                byg_kondemnering.uninhabitable(
+                    user_id,
+                    task_date,
+                    bfe,
+                    sagsid,
+                    last_modified,
+                    adresse,
+                    aar,
+                    case_status,
+                    afsluttet
+                ) 
+                values (
+                    [string:getUsershortid(sessionid)],
+                    [timestamp:toTimestamp(taskDate, 'yyyy-MM-dd')],
+                    [number:bfeNo],
+                    [number:sagsId],
+                    CURRENT_TIMESTAMP,
+                    [string:address],
+                    [number:year],
+                    [string:if isdefined (caseStatus) then caseStatus else NULL endif],
+                    [boolean:completed='true']
+                );
+        </sql>
+        <sql command="delete-by-id">delete from byg_kondemnering.uninhabitable where id=[number:id];</sql>
+        <sql command="update-by-id">
+            update byg_kondemnering.uninhabitable
+            set 
+                task_date = [timestamp:toTimestamp(taskDate, 'yyyy-MM-dd')], 
+                bfe = [number:bfe], 
+                sagsid = [number:sagsId],
+                last_modified = CURRENT_TIMESTAMP, 
+                adresse = [string:address],
+                aar = [number:year],
+                status = [string:if isdefined (status) then status else NULL endif],
+                afsluttet = [boolean:completed='true']
+            where
+                id = [number: id];
+        </sql>
+    </datasource>
+</datasources>
