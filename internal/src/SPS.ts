@@ -1,4 +1,4 @@
-import { formatDate } from "date-fns";
+import {format} from 'date-fns';
 declare var SpatialServer: any;
 
 
@@ -16,13 +16,11 @@ interface Profile {
 
 export interface CaseEntry {
     id?: number;
-    taskDate: Date;
-    caseStatus: string;
-    sagsId: number;
-    address: string;
+    area: number;
     userId: string;
-    year: number;
-    bfeNo: number;
+    caseDate: Date;
+    sagsId: number;
+    caseStatus: string;
     completed: boolean;
 }
 
@@ -107,14 +105,12 @@ export default class SPS {
         const caseEntries: CaseEntry[] = data.map((element) => {
             return {
                 id: parseInt(element.id as string),
-                taskDate: new Date(element.task_date as string),
-                caseStatus: element.status as string,
-                sagsId: parseInt(element.sagsid as string),
-                address: element.adresse as string,
+                area: parseFloat(element.area as string),
                 userId: element.user_id as string,
-                year: parseInt(element.aar as string),
-                bfeNo: parseInt(element.bfe as string),
-                completed: element.afsluttet === 'true',
+                caseDate: new Date(element.case_date as string),
+                sagsId: parseInt(element.sagsid as string),
+                caseStatus: element.case_status as string,
+                completed: element.completed === 'true',
             };
         });
         return caseEntries;
@@ -127,7 +123,7 @@ export default class SPS {
             await this.executeOnDs('lk_uninhabitable_editor', {
                 command: 'insert-case',
                 ...entry,
-                taskDate: formatDate(entry.taskDate, 'yyyy-MM-dd'),
+                caseDate: format(entry.caseDate, 'yyyy-MM-dd'),
             });
         } catch (e) {
             console.error(e.exception.message);
@@ -146,7 +142,7 @@ export default class SPS {
             await this.executeOnDs('lk_uninhabitable_editor', {
                 command: 'update-by-id',
                 ...entry,
-                taskDate: formatDate(entry.taskDate, 'yyyy-MM-dd'),
+                caseDate: format(entry.caseDate, 'yyyy-MM-dd'),
             });
         } catch (e) {
             console.error(e.exception.message);

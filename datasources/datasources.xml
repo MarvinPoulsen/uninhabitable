@@ -12,24 +12,20 @@
         <sql command="insert-case">
             insert into 
                 byg_kondemnering.uninhabitable(
+                    area,
                     user_id,
-                    task_date,
-                    bfe,
+                    case_date,
                     sagsid,
                     last_modified,
-                    adresse,
-                    aar,
                     case_status,
-                    afsluttet
+                    completed
                 ) 
                 values (
+                    [number:area],
                     [string:getUsershortid(sessionid)],
-                    [timestamp:toTimestamp(taskDate, 'yyyy-MM-dd')],
-                    [number:bfeNo],
+                    [timestamp:toTimestamp(caseDate, 'yyyy-MM-dd')],
                     [number:sagsId],
                     CURRENT_TIMESTAMP,
-                    [string:address],
-                    [number:year],
                     [string:if isdefined (caseStatus) then caseStatus else NULL endif],
                     [boolean:completed='true']
                 );
@@ -38,14 +34,12 @@
         <sql command="update-by-id">
             update byg_kondemnering.uninhabitable
             set 
-                task_date = [timestamp:toTimestamp(taskDate, 'yyyy-MM-dd')], 
-                bfe = [number:bfe], 
+                area = [number:area], 
+                case_date = [timestamp:toTimestamp(caseDate, 'yyyy-MM-dd')], 
                 sagsid = [number:sagsId],
                 last_modified = CURRENT_TIMESTAMP, 
-                adresse = [string:address],
-                aar = [number:year],
-                status = [string:if isdefined (status) then status else NULL endif],
-                afsluttet = [boolean:completed='true']
+                case_status = [string:if isdefined (caseStatus) then caseStatus else NULL endif],
+                completed = [boolean:completed='true']
             where
                 id = [number: id];
         </sql>
