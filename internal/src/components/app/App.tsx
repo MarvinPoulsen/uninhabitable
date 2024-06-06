@@ -2,13 +2,16 @@ import React, { FC, useRef, useState, useEffect } from 'react';
 import './app.scss';
 import NavBar from '../navbar/NavBar';
 import SPS, { CaseEntry, SpsUser } from '../../SPS';
+import ContentEditable from '../table/ContentEditable';
 
 const App: FC = () => {
     const [user, setUser] = useState<SpsUser>(null);
     const [logo, setLogo] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
     const [isCaseModalActive, setIsCaseModalActive] = useState<boolean>(false);
-    const [cases, setCases] = useState<CaseEntry[]>([]);
+    const [isNewCaseActive, setIsNewCaseActive] = useState<boolean>(false);
+    const [caseData, setCaseData] = useState<CaseEntry[]>([]);
+    const [editEntry, setEditEntry] = useState<number>(null); // indeholder id
 
     const sps = useRef<SPS>(new SPS());
     if (error) {
@@ -23,114 +26,63 @@ const App: FC = () => {
             const logoUrl = sps.current.getParameter('module.tasm.logo');
             setLogo(siteUrl + logoUrl);
             const uninhabitableList = await sps.current.getUninhabitableData();
-            setCases(uninhabitableList);
+            setCaseData(uninhabitableList);
         };
         getDataFromSps();
     }, []);
 
+
+    const onSave = async () => {
+        console.log('onSave')
+        // const entry: TimeEntry = {
+        //     userId: user.shortid,
+        //     taskDate,
+        //     taskTime,
+        //     taskId,
+        //     taskStart,
+        //     taskEnd,
+        //     note,
+        //     allDay,
+        // };
+        // eksistensen af editEntry afgør om det er en update eller insert
+        if (editEntry) {
+            console.log('update')
+            // entry.id = editEntry;
+            // await sps.current.updateTimeRegistration(entry);
+            // setEditEntry(null);
+        } else {
+            console.log('insert')
+            // await sps.current.insertTimeRegistration(entry);
+        }
+        // refresh();
+    };
+
+    const resetForm = () => {
+      console.log('resetFrom')
+        setEditEntry(null);
+        // setTaskTime(30);
+        // setTaskId(1);
+        // setTaskEnd(new Date(taskDate.setHours(0, 30, 0, 0)));
+        // setTaskStart(new Date(taskDate.setHours(0, 0, 0, 0)));
+        // setNote('');
+        // setAllDay(true);
+        setError(null);
+    };
     return (
         <>
-            {user && 
-                <NavBar 
-                    setIsCaseModalActive={setIsCaseModalActive} 
-                    logo={logo} 
-                    user={user} 
-                />
-            }
+            {user && <NavBar setIsCaseModalActive={setIsCaseModalActive} logo={logo} user={user} />}
             <section className="section">
-                <table className="table is-bordered">
-                    <tbody>
-                        <tr>
-                            <th className="is-link">Link th cell</th>
-                            <td>Two</td>
-                            <td className="is-link">Link td cell</td>
-                            <td>Four</td>
-                            <td>Five</td>
-                        </tr>
-                        <tr className="is-link">
-                            <th>Link row</th>
-                            <td>Two</td>
-                            <td>Three</td>
-                            <td>Four</td>
-                            <td>Five</td>
-                        </tr>
-
-                        <tr>
-                            <th className="is-primary">Primary th cell</th>
-                            <td>Two</td>
-                            <td className="is-primary">Primary td cell</td>
-                            <td>Four</td>
-                            <td>Five</td>
-                        </tr>
-                        <tr className="is-primary">
-                            <th>Primary row</th>
-                            <td>Two</td>
-                            <td>Three</td>
-                            <td>Four</td>
-                            <td>Five</td>
-                        </tr>
-
-                        <tr>
-                            <th className="is-info">Info th cell</th>
-                            <td>Two</td>
-                            <td className="is-info">Info td cell</td>
-                            <td>Four</td>
-                            <td>Five</td>
-                        </tr>
-                        <tr className="is-info">
-                            <th>Info row</th>
-                            <td>Two</td>
-                            <td>Three</td>
-                            <td>Four</td>
-                            <td>Five</td>
-                        </tr>
-
-                        <tr>
-                            <th className="is-success">Success th cell</th>
-                            <td>Two</td>
-                            <td className="is-success">Success td cell</td>
-                            <td>Four</td>
-                            <td>Five</td>
-                        </tr>
-                        <tr className="is-success">
-                            <th>Success row</th>
-                            <td>Two</td>
-                            <td>Three</td>
-                            <td>Four</td>
-                            <td>Five</td>
-                        </tr>
-
-                        <tr>
-                            <th className="is-warning">Warning th cell</th>
-                            <td>Two</td>
-                            <td className="is-warning">Warning td cell</td>
-                            <td>Four</td>
-                            <td>Five</td>
-                        </tr>
-                        <tr className="is-warning">
-                            <th>Warning row</th>
-                            <td>Two</td>
-                            <td>Three</td>
-                            <td>Four</td>
-                            <td>Five</td>
-                        </tr>
-
-                        <tr>
-                            <th className="is-danger">Danger th cell</th>
-                            <td>Two</td>
-                            <td className="is-danger">Danger td cell</td>
-                            <td>Four</td>
-                            <td>Five</td>
-                        </tr>
-                        <tr className="is-danger">
-                            <th>Danger row</th>
-                            <td>Two</td>
-                            <td>Three</td>
-                            <td>Four</td>
-                            <td>Five</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <ContentEditable
+                    tableContent={caseData}
+                    onSave={onSave}
+                    setEditEntry={setEditEntry}
+                    resetForm={function (): void {
+                        throw new Error('Function not implemented.');
+                    }}
+                    setIsNewCaseActive={setIsNewCaseActive}
+                    error={error}
+                    setError={setError}
+                />
             </section>
         </>
     );
