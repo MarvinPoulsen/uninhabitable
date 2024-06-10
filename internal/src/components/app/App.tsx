@@ -3,6 +3,8 @@ import './app.scss';
 import NavBar from '../navbar/NavBar';
 import SPS, { CaseEntry, SpsUser } from '../../SPS';
 import ContentEditable from '../table/ContentEditable';
+import CaseModal from '../modal/CaseModal';
+import {format} from 'date-fns'
 
 const App: FC = () => {
     const [user, setUser] = useState<SpsUser>(null);
@@ -12,6 +14,7 @@ const App: FC = () => {
     const [isNewCaseActive, setIsNewCaseActive] = useState<boolean>(false);
     const [caseData, setCaseData] = useState<CaseEntry[]>([]);
     const [editEntry, setEditEntry] = useState<number>(null); // indeholder id
+    const [isDeletingId, setIsDeletingId] = useState<number>(null);
 
     const sps = useRef<SPS>(new SPS());
     if (error) {
@@ -31,9 +34,8 @@ const App: FC = () => {
         getDataFromSps();
     }, []);
 
-
     const onSave = async () => {
-        console.log('onSave')
+        console.log('onSave');
         // const entry: TimeEntry = {
         //     userId: user.shortid,
         //     taskDate,
@@ -46,19 +48,19 @@ const App: FC = () => {
         // };
         // eksistensen af editEntry afgør om det er en update eller insert
         if (editEntry) {
-            console.log('update')
+            console.log('update');
             // entry.id = editEntry;
             // await sps.current.updateTimeRegistration(entry);
             // setEditEntry(null);
         } else {
-            console.log('insert')
+            console.log('insert');
             // await sps.current.insertTimeRegistration(entry);
         }
         // refresh();
     };
 
     const resetForm = () => {
-      console.log('resetFrom')
+        console.log('resetFrom');
         setEditEntry(null);
         // setTaskTime(30);
         // setTaskId(1);
@@ -68,6 +70,18 @@ const App: FC = () => {
         // setAllDay(true);
         setError(null);
     };
+
+    const formInfo = ()=>{
+        // console.log('taskDate: ',taskDate)
+        // console.log('taskTime: ',taskTime)
+        const timeStamp = format(Date.now(), 'HH:mm:ss')
+        // console.log('taskEnd (',timeStamp,'): ',taskEnd)
+        // console.log('taskStart: ',taskStart)
+        // console.log('note: ',note)
+        // console.log('taskId: ',taskId)
+        // console.log('allDay: ',allDay)
+    }
+
     return (
         <>
             {user && <NavBar setIsCaseModalActive={setIsCaseModalActive} logo={logo} user={user} />}
@@ -82,8 +96,16 @@ const App: FC = () => {
                     setIsNewCaseActive={setIsNewCaseActive}
                     error={error}
                     setError={setError}
+                    setIsCaseModalActive={setIsCaseModalActive}
+                    formInfo={formInfo} 
                 />
             </section>
+            <CaseModal
+                    isActive={isCaseModalActive}
+                    onSave={onSave}
+                    setIsCaseModalActive={setIsCaseModalActive}
+                    formInfo={formInfo} 
+            />
         </>
     );
 };

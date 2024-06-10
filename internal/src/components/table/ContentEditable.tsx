@@ -3,7 +3,7 @@ import { CaseEntry } from '../../SPS';
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import Icon from '@mdi/react';
 import { mdiDelete, mdiPencil } from '@mdi/js';
-import {format} from "date-fns"
+import { format } from 'date-fns';
 
 interface CasesTable {
     editRow: React.JSX.Element;
@@ -14,10 +14,10 @@ interface CasesTable {
     caseDate: string;
     sagsId: number;
     caseStatus: string;
-    completed: boolean;
+    completed: React.JSX.Element;
 }
 const columnHelper = createColumnHelper<CasesTable>();
-console.log('columnHelper', columnHelper)
+console.log('columnHelper', columnHelper);
 
 const columns = [
     columnHelper.accessor('editRow', {
@@ -49,6 +49,7 @@ const columns = [
     }),
     columnHelper.accessor('completed', {
         header: 'Afsluttet',
+        cell: (info) => info.getValue(),
     }),
 ];
 
@@ -60,54 +61,65 @@ interface ContentEditableProps {
     setIsNewCaseActive: (isOn: boolean) => void;
     error: string;
     setError: (errorDescription) => void;
+    setIsCaseModalActive: (isOn: boolean) => void;
+    formInfo?: () => void;
 }
 
 const ContentEditable = (props: ContentEditableProps) => {
     console.log('ContentEditable: ', props);
 
+    const [onContentEditable, setOnContentEditeble] = useState<number>(null); // indeholder id
+
     const handleOnEdit = (element) => {
         console.log('element: ', element);
+        props.setIsCaseModalActive(true)
         props.setEditEntry(element.id);
-        props.setIsNewCaseActive(true);
-        props.setError(null);
+        // props.setIsNewCaseActive(true);
+        // props.setError(null);
+        // setOnContentEditeble(element.id)
     };
     const onDelete = (e) => {
         console.log('e: ', e);
     };
 
+    const onChangeCompleted = (e) => {
+        const id = parseInt(e.target.value);
+        const on = e.target.checked;
+        console.log('id - on: ', id, on);
+    };
     const tableContent = props.tableContent.map((element) => {
-        const dato = format(element.caseDate, 'dd-MM-yyyy')
+        const dato = format(element.caseDate, 'dd-MM-yyyy');
         // const dato = 'dd-MM-yyyy';
-
 
         return {
             editRow: (
                 <a onClick={() => handleOnEdit(element)}>
-                    <Icon 
-                        path={mdiPencil}
-                        size={0.7}
-                    />
+                    <Icon path={mdiPencil} size={0.7} />
                 </a>
             ),
             deleteRow: (
                 <a onClick={() => onDelete(element.id)}>
-                    <Icon 
-                        path={mdiDelete}
-                        size={0.7}
-                    />
+                    <Icon path={mdiDelete} size={0.7} />
                 </a>
             ),
-            userId: element.userId,
             area: element.area,
-            caseStatus: element.caseStatus,
+            userId: element.userId,
             sagsId: element.sagsId,
-            completed: element.completed,
             caseDate: dato,
+            caseStatus: element.caseStatus,
+            completed: (
+                <input 
+                    type="checkbox" 
+                    checked={element.completed} 
+                    onChange={onChangeCompleted} 
+                    value={element.id} 
+                />
+            ),
+            id:element.id,
         };
     });
 
     const data = useMemo(() => tableContent, [props.tableContent]);
-    
 
     // const [data, _setData] = useState(() => [...caseData]);
     const rerender = useReducer(() => ({}), {})[1];
@@ -118,6 +130,8 @@ const ContentEditable = (props: ContentEditableProps) => {
         getCoreRowModel: getCoreRowModel(),
     });
 
+    console.log('getHeaderGroups: ',table.getHeaderGroups())
+    console.log('getRowModel: ',table.getRowModel())
     return (
         <>
             <table className="table is-bordered is-narrow">
@@ -139,6 +153,7 @@ const ContentEditable = (props: ContentEditableProps) => {
                         <tr key={row.id}>
                             {row.getVisibleCells().map((cell) => (
                                 <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+                                // <td key={cell.id} contentEditable={cell.row.original.id === onContentEditable} onClick={()=>console.log('cell: ',cell)}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
                             ))}
                         </tr>
                     ))}
