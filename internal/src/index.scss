@@ -60,8 +60,8 @@ $family-serif: "Nunito", "Verdana", "Georgia", serif;
 // Override global Sass variables from the /utilities folder
 @use "../node_modules/bulma/sass/utilities" with (
   $family-primary: $family-serif,
-  $primary: $green-80,
-  $link: $lime-green-40,
+  $primary: $umbra,
+  $link: $umbra,
   $control-border-width: 2px
 );
 
