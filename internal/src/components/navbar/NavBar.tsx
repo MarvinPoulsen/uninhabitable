@@ -18,12 +18,18 @@ interface NavBarProps {
     logo: string;
     // setNote: (newNote) => void;
     // setTaskId: (newTaskId) => void;
-    // resetForm: () => void;
+    resetForm: () => void;
     // formInfo?: () => void;
 }
 const NavBar = (props: NavBarProps) => {
     const userName = props.user.name;
     const [isActiveTab, setActiveTab] = useState<Tab>(null);
+
+const handleNewCase = ()=>{
+    props.resetForm()
+    props.setIsCaseModalActive(true)
+}
+
     return (
         <>
             <nav className="navbar is-primary">
@@ -35,7 +41,7 @@ const NavBar = (props: NavBarProps) => {
 
                 <div id="navbarKondem" className="navbar-menu">
                     <div className="navbar-start">
-                        <a className="navbar-item" onClick={() => props.setIsCaseModalActive(true)}>
+                        <a className="navbar-item" onClick={handleNewCase}>
                             Opret Kondemnering
                         </a>
                         <div className="navbar-item has-dropdown is-hoverable" key={isActiveTab}>
