@@ -17,10 +17,12 @@ interface Profile {
 export interface CaseEntry {
     id?: number;
     area: number;
+    address: string;
     userId: string;
+    caseStatus: string;
     caseDate: Date;
     sagsId: number;
-    caseStatus: string;
+    note: string;
     completed: boolean;
 }
 
@@ -101,22 +103,24 @@ export default class SPS {
 
     async getUninhabitableData(): Promise<CaseEntry[]> {
         const data = await this.executeOnDs('lk_uninhabitable_editor', { command: 'read-all' });
-        console.log('data: ',data)
+        // console.log('data: ',data)
         const caseEntries: CaseEntry[] = data.map((element) => {
             return {
                 id: parseInt(element.id as string),
                 area: parseFloat(element.area as string),
+                address: element.address as string,
                 userId: element.user_id as string,
+                caseStatus: element.case_status as string,
                 caseDate: new Date(element.case_date as string),
                 sagsId: parseInt(element.sagsid as string),
-                caseStatus: element.case_status as string,
+                note: element.note as string,
                 completed: element.completed === 'true',
             };
         });
         return caseEntries;
     }
     async insertCase(entry: CaseEntry): Promise<void> {
-        console.log('CaseEntry: ',entry)
+        // console.log('CaseEntry: ',entry)
         // console.log('allDay: ',typeof entry.allDay)
 
         try {
@@ -131,12 +135,12 @@ export default class SPS {
         }
     }
 
-    async deleteTimeRegistration(id: number): Promise<void> {
+    async deleteCase(id: number): Promise<void> {
         this.executeOnDs('lk_uninhabitable_editor', { command: 'delete-by-id', id });
     }
 
-    async updateTimeRegistration(entry: CaseEntry): Promise<void> {
-        console.log('CaseEntry: ',entry)
+    async updateCase(entry: CaseEntry): Promise<void> {
+        // console.log('CaseEntry: ',entry)
         // console.log('allDay: ',typeof entry.allDay)
         try {
             await this.executeOnDs('lk_uninhabitable_editor', {

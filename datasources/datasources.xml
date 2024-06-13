@@ -13,20 +13,26 @@
             insert into 
                 byg_kondemnering.uninhabitable(
                     area,
+                    address,
                     user_id,
+                    case_status,
                     case_date,
                     sagsid,
                     last_modified,
-                    case_status,
+                    modified_by,
+                    note,
                     completed
                 ) 
                 values (
                     [number:area],
-                    [string:getUsershortid(sessionid)],
+                    [string:address],
+                    [string:userId],
+                    [string:caseStatus],
                     [timestamp:toTimestamp(caseDate, 'yyyy-MM-dd')],
                     [number:sagsId],
                     CURRENT_TIMESTAMP,
-                    [string:if isdefined (caseStatus) then caseStatus else NULL endif],
+                    [string:getUsershortid(sessionid)],
+                    [string:if isdefined (note) then note else NULL endif],
                     [boolean:completed='true']
                 );
         </sql>
@@ -35,10 +41,14 @@
             update byg_kondemnering.uninhabitable
             set 
                 area = [number:area], 
+                address = [string:address],
+                user_id = [string:userId],
+                case_status = [string:caseStatus],
                 case_date = [timestamp:toTimestamp(caseDate, 'yyyy-MM-dd')], 
                 sagsid = [number:sagsId],
                 last_modified = CURRENT_TIMESTAMP, 
-                case_status = [string:if isdefined (caseStatus) then caseStatus else NULL endif],
+                modified_by = [string:getUsershortid(sessionid)],
+                note = [string:if isdefined (note) then note else NULL endif],
                 completed = [boolean:completed='true']
             where
                 id = [number: id];
