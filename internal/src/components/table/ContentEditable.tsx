@@ -10,14 +10,16 @@ interface CasesTable {
     deleteRow: React.JSX.Element;
     id?: number;
     area: number;
+    address: string;
     userId: string;
+    caseStatus: string;
     caseDate: string;
     sagsId: number;
-    caseStatus: string;
+    note: string;
     completed: React.JSX.Element;
 }
 const columnHelper = createColumnHelper<CasesTable>();
-console.log('columnHelper', columnHelper);
+// console.log('columnHelper', columnHelper);
 
 const columns = [
     columnHelper.accessor('editRow', {
@@ -32,6 +34,13 @@ const columns = [
         header: () => 'Area',
         cell: (info) => info.renderValue(),
     }),
+    columnHelper.accessor('address', {
+        header: () => 'Adresse',
+        cell: (info) => info.renderValue(),
+    }),
+    columnHelper.accessor('caseStatus', {
+        header: 'Status',
+    }),
     columnHelper.accessor('userId', {
         header: () => 'Bruger',
         cell: (info) => info.getValue(),
@@ -44,8 +53,8 @@ const columns = [
         header: () => 'Dato',
         cell: (info) => info.renderValue(),
     }),
-    columnHelper.accessor('caseStatus', {
-        header: 'Status',
+    columnHelper.accessor('note', {
+        header: 'Note',
     }),
     columnHelper.accessor('completed', {
         header: 'Afsluttet',
@@ -56,24 +65,43 @@ const columns = [
 interface ContentEditableProps {
     tableContent: CaseEntry[];
     onSave: () => void;
-    setEditEntry: (id) => void;
     resetForm: () => void;
-    setIsNewCaseActive: (isOn: boolean) => void;
     error: string;
     setError: (errorDescription) => void;
     setIsCaseModalActive: (isOn: boolean) => void;
     formInfo?: () => void;
+    entry: CaseEntry;
+    setEntry: (entry: CaseEntry)=> void;
 }
 
 const ContentEditable = (props: ContentEditableProps) => {
-    console.log('ContentEditable: ', props);
-
     const [onContentEditable, setOnContentEditeble] = useState<number>(null); // indeholder id
 
     const handleOnEdit = (element) => {
-        console.log('element: ', element);
+        console.log('entry1: ', props.entry)
+
+        console.log('handleOnEdit - element: ', element);
+        try {
+            
+            let newEntry = props && {
+                ...props.entry,
+                id: element.id,
+                area: element.area,
+                address: element.address,
+                userId: element.userId,
+                caseStatus: element.caseStatus,
+                caseDate: element.caseDate,
+                sagsId: element.sagsId,
+                note: element.note,
+                completed: element.completed,
+              };
+            props.setEntry(newEntry);              
+        } catch (error) {
+            console.log('Noget gik galt - Kun tal er tilladt');
+        }
+        console.log('entry2: ', props.entry)
         props.setIsCaseModalActive(true)
-        props.setEditEntry(element.id);
+        // props.setEditEntry(element.id);
         // props.setIsNewCaseActive(true);
         // props.setError(null);
         // setOnContentEditeble(element.id)
@@ -85,7 +113,7 @@ const ContentEditable = (props: ContentEditableProps) => {
     const onChangeCompleted = (e) => {
         const id = parseInt(e.target.value);
         const on = e.target.checked;
-        console.log('id - on: ', id, on);
+        // console.log('id - on: ', id, on);
     };
     const tableContent = props.tableContent.map((element) => {
         const dato = format(element.caseDate, 'dd-MM-yyyy');
@@ -103,16 +131,19 @@ const ContentEditable = (props: ContentEditableProps) => {
                 </a>
             ),
             area: element.area,
+            address: element.address,
             userId: element.userId,
             sagsId: element.sagsId,
-            caseDate: dato,
             caseStatus: element.caseStatus,
+            caseDate: dato,
+            note: element.note,
             completed: (
                 <input 
                     type="checkbox" 
                     checked={element.completed} 
-                    onChange={onChangeCompleted} 
-                    value={element.id} 
+                    // onChange={onChangeCompleted} 
+                    // value={element.id} 
+                    disabled 
                 />
             ),
             id:element.id,
@@ -130,8 +161,8 @@ const ContentEditable = (props: ContentEditableProps) => {
         getCoreRowModel: getCoreRowModel(),
     });
 
-    console.log('getHeaderGroups: ',table.getHeaderGroups())
-    console.log('getRowModel: ',table.getRowModel())
+    // console.log('getHeaderGroups: ',table.getHeaderGroups())
+    // console.log('getRowModel: ',table.getRowModel())
     return (
         <>
             <table className="table is-bordered is-narrow">
