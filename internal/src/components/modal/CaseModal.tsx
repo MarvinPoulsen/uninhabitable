@@ -1,24 +1,340 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { CaseEntry } from '../../SPS';
+import 'react-datepicker/dist/react-datepicker.css';
+import DatePicker from 'react-datepicker';
+import { da } from 'date-fns/locale';
+import Autocomplete from '../dawa/Autocomplete';
+import {statusOptions } from '../../config'
 
 interface CaseModalProps {
     isActive: boolean;
-    onSave: (favoriteIds: number[]) => void;
+    onSave: () => void;
     setIsCaseModalActive: (isOn: boolean) => void;
     formInfo?: () => void;
+    entry: CaseEntry;
+    setEntry: (entry: CaseEntry) => void;
+    resetForm: () => void;
 }
 
 const CaseModal = (props: CaseModalProps) => {
-    console.log('CaseModalProps: ', props);
 
-    const onCloseCases = () => {
+    
+    console.log(statusOptions);
+
+    const handleAreaChange = (event) => {
+        try {
+            let newEntry = { ...props.entry };
+            newEntry.area = parseFloat(event.target.value.replace(/,/g, '.'));
+            props.setEntry(newEntry);
+        } catch (error) {
+            console.log('Noget gik galt - Kun tal er tilladt');
+        }
+    };
+    const handleUserIdChange = (event) => {
+        try {
+            let newEntry = { ...props.entry };
+            newEntry.userId = event.target.value;
+            props.setEntry(newEntry);
+        } catch (error) {
+            console.log('Noget gik galt!');
+        }
+    };
+    const handleNoteChange = (event) => {
+        try {
+            let newEntry = { ...props.entry };
+            newEntry.note = event.target.value;
+            props.setEntry(newEntry);
+        } catch (error) {
+            console.log('Noget gik galt!');
+        }
+    };
+    const handleCaseDateChange = (event) => {
+        try {
+            let newEntry = { ...props.entry };
+            newEntry.caseDate = event;
+            props.setEntry(newEntry);
+        } catch (error) {
+            console.log('Noget gik galt!');
+        }
+    };
+    const handleSagsIdChange = (event) => {
+        try {
+            let newEntry = { ...props.entry };
+            newEntry.sagsId = parseInt(event.target.value);
+            props.setEntry(newEntry);
+        } catch (error) {
+            console.log('Noget gik galt!');
+        }
+    };
+    const handleCaseStatusChange = (event) => {
+        try {
+            let newEntry = { ...props.entry };
+            newEntry.caseStatus = event.target.value;
+            props.setEntry(newEntry);
+        } catch (error) {
+            console.log('Noget gik galt!');
+        }
+    };
+    const handleCompletedChange = (event) => {
+        try {
+            let newEntry = { ...props.entry };
+            newEntry.completed = event.target.checked;
+            props.setEntry(newEntry);
+        } catch (error) {
+            console.log('Noget gik galt!');
+        }
+    };
+
+    const closeModal = () => {
+        props.resetForm();
         props.setIsCaseModalActive(false);
     };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        props.onSave();
+        closeModal();
+    };
+
     return (
         <>
             <div className={'modal' + (props.isActive ? ' is-active' : '')}>
-                <div className="modal-background" onClick={onCloseCases}></div>
-                <div className="modal-content">{/* Any other Bulma elements you want  */}</div>
-                <button className="modal-close is-large" aria-label="close"></button>
+                <div className="modal-background" onClick={closeModal}></div>
+                <div className="modal-content">
+                    {/* Any other Bulma elements you want  */}
+                    <div className="box">
+                        {props && (
+                            <form onSubmit={handleSubmit}>
+                                <div className="field is-horizontal">
+                                    <div className="field-label is-normal">
+                                        <label className="label">Areal</label>
+                                    </div>
+                                    <div className="field-body">
+                                        <div className="field">
+                                            <p className="control">
+                                                <input
+                                                    className="input"
+                                                    type="text"
+                                                    placeholder="Areal"
+                                                    onChange={handleAreaChange}
+                                                    name="area"
+                                                    defaultValue={props.entry.area}
+                                                />
+                                            </p>
+                                            <p className="help">Brug punktum til ciffertal</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="field is-horizontal">
+                                    <div className="field-label is-normal">
+                                        <label className="label">Adresse</label>
+                                    </div>
+                                    <div className="field-body">
+                                        <div className="field">
+                                            <Autocomplete entry={props.entry} setEntry={props.setEntry} />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="field is-horizontal">
+                                    <div className="field-label is-normal">
+                                        <label className="label">Status</label>
+                                    </div>
+                                    <div className="field-body">
+                                        <div className="field is-narrow">
+                                            <div className="control">
+                                                <div className="select is-fullwidth">
+                                                    <select
+                                            onChange={handleCaseStatusChange}
+                                            name="taskId"
+                                            value={props.entry.caseStatus}>
+                                                 {/* {props.entry.map((option) => (
+                                                <option
+                                                    key={option.id}
+                                                    value={option.id}
+                                                >
+                                                    {option.taskName}
+                                                </option>
+                                            ))} */}
+                                                        <option>Afventer</option>
+                                                        <option>I gang</option>
+                                                        <option>Mangler</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="field is-horizontal">
+                                    <div className="field-label is-normal">
+                                        <label className="label">Bruger</label>
+                                    </div>
+                                    <div className="field-body">
+                                        <div className="field">
+                                            <p className="control">
+                                                <input
+                                                    className="input"
+                                                    type="text"
+                                                    placeholder="Bruger"
+                                                    onChange={handleUserIdChange}
+                                                    name="userId"
+                                                    defaultValue={props.entry.userId}
+                                                />
+                                            </p>
+                                            <p className="help">Brug punktum til ciffertal</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="field is-horizontal">
+                                    <div className="field-label is-normal">
+                                        <label className="label">Dato</label>
+                                    </div>
+                                    <div className="field-body">
+                                        <div className="field">
+                                            <DatePicker
+                                                todayButton="Dags dato"
+                                                selected={props.entry.caseDate}
+                                                onChange={handleCaseDateChange} // setTaskDate bliver sat uden tid
+                                                locale={da}
+                                                className="input"
+                                                dateFormat="dd-MM-yyyy"
+                                                name="date"
+                                                value={props.entry.caseDate}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="field is-horizontal">
+                                    <div className="field-label is-normal">
+                                        <label className="label">SagsId</label>
+                                    </div>
+                                    <div className="field-body">
+                                        <div className="field">
+                                            <div className="control">
+                                                <input
+                                                    className="input"
+                                                    type="text"
+                                                    placeholder="SBSYS ID"
+                                                    onChange={handleSagsIdChange}
+                                                    name="sagsId"
+                                                    defaultValue={props.entry.sagsId}
+                                                />
+                                            </div>
+                                            <p className="help is-danger">Dette felt skal udfyldes</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="field is-horizontal">
+                                    <div className="field-label is-normal">
+                                        <label className="label">Note</label>
+                                    </div>
+                                    <div className="field-body">
+                                        <div className="field">
+                                            <div className="control">
+                                                <textarea
+                                                    className="textarea"
+                                                    placeholder="Explain how we can help you"
+                                                    // rows={2}
+                                                    onChange={handleNoteChange}
+                                                    name="note"
+                                                    value={props.entry.note}
+                                                ></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="field is-horizontal">
+                                    <div className="field-label">
+                                        <label className="label">Afsluttet</label>
+                                    </div>
+                                    <div className="field-body">
+                                        <div className="field">
+                                            <div className="control">
+                                                <label className="checkbox">
+                                                    <input
+                                                        type="checkbox"
+                                                        onChange={handleCompletedChange}
+                                                        defaultChecked={props.entry.completed}
+                                                        // checked
+                                                    />
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {/* <div className="field is-horizontal">
+    <div className="field-label"></div>
+    <div className="field-body">
+        <div className="field is-expanded">
+            <div className="field has-addons">
+                <p className="control">
+                    <a className="button is-static">+44</a>
+                </p>
+                <p className="control is-expanded">
+                    <input className="input" type="tel" placeholder="Your phone number" />
+                </p>
+            </div>
+            <p className="help">Do not enter the first zero</p>
+        </div>
+    </div>
+</div> */}
+                                {/* <div className="field is-horizontal">
+    <div className="field-label is-normal">
+        <label className="label">Department</label>
+    </div>
+    <div className="field-body">
+        <div className="field is-narrow">
+            <div className="control">
+                <div className="select is-fullwidth">
+                    <select>
+                        <option>Business development</option>
+                        <option>Marketing</option>
+                        <option>Sales</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> */}
+                                {/* <div className="field is-horizontal">
+    <div className="field-label">
+        <label className="label">Already a member?</label>
+    </div>
+    <div className="field-body">
+        <div className="field is-narrow">
+            <div className="control">
+                <label className="radio">
+                    <input type="radio" name="member" />
+                    Yes
+                </label>
+                <label className="radio">
+                    <input type="radio" name="member" />
+                    No
+                </label>
+            </div>
+        </div>
+    </div>
+</div> */}
+                                <div className="field is-grouped">
+                                    <div className="control">
+                                        <button className="button is-link">Save</button>
+                                    </div>
+                                    <div className="control">
+                                        <button className="button" type="button" onClick={props.resetForm}>
+                                            Reset
+                                        </button>
+                                    </div>
+                                    <div className="control">
+                                        <button className="button is-info" type="button" onClick={props.formInfo}>
+                                            Info
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        )}{' '}
+                    </div>
+                </div>
+                <button className="modal-close is-large" aria-label="close" onClick={closeModal}></button>
             </div>
         </>
     );
