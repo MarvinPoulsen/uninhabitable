@@ -24,12 +24,12 @@
                     completed
                 ) 
                 values (
-                    [number:area],
-                    [string:address],
-                    [string:userId],
-                    [string:caseStatus],
+                    [number:if isdefined (area) then area else NULL endif],
+                    [string:if isdefined (address) then address else NULL endif],
+                    [string:if isdefined (userId) then userId else NULL endif],
+                    [string:if isdefined (caseStatus) then caseStatus else NULL endif],
                     [timestamp:toTimestamp(caseDate, 'yyyy-MM-dd')],
-                    [number:sagsId],
+                    [number:if isdefined (sagsId) then sagsId else NULL endif],
                     CURRENT_TIMESTAMP,
                     [string:getUsershortid(sessionid)],
                     [string:if isdefined (note) then note else NULL endif],
@@ -40,12 +40,12 @@
         <sql command="update-by-id">
             update byg_kondemnering.uninhabitable
             set 
-                area = [number:area], 
-                address = [string:address],
-                user_id = [string:userId],
-                case_status = [string:caseStatus],
+                area = [number:if isdefined (area) then area else NULL endif],
+                address = [string:if isdefined (address) then address else NULL endif],
+                user_id = [string:if isdefined (userId) then userId else NULL endif],
+                case_status =  [string:if isdefined (caseStatus) then caseStatus else NULL endif],
                 case_date = [timestamp:toTimestamp(caseDate, 'yyyy-MM-dd')], 
-                sagsid = [number:sagsId],
+                sagsid = [number:if isdefined (sagsId) then sagsId else NULL endif],
                 last_modified = CURRENT_TIMESTAMP, 
                 modified_by = [string:getUsershortid(sessionid)],
                 note = [string:if isdefined (note) then note else NULL endif],
