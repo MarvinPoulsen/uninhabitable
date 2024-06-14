@@ -4,17 +4,28 @@ import NavBar from '../navbar/NavBar';
 import SPS, { CaseEntry, SpsUser } from '../../SPS';
 import ContentEditable from '../table/ContentEditable';
 import CaseModal from '../modal/CaseModal';
-import {format} from 'date-fns'
+import DeleteModal from '../modal/DeleteModal';
 
 const App: FC = () => {
     const [user, setUser] = useState<SpsUser>(null);
     const [logo, setLogo] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
-    const [isCaseModalActive, setIsCaseModalActive] = useState<boolean>(false);
-    const [isNewCaseActive, setIsNewCaseActive] = useState<boolean>(false);
     const [caseData, setCaseData] = useState<CaseEntry[]>([]);
-    const [editEntry, setEditEntry] = useState<number>(null); // indeholder id
-    const [isDeletingId, setIsDeletingId] = useState<number>(null);
+
+    const [isCaseModalActive, setIsCaseModalActive] = useState<boolean>(false);
+
+    const [onDelete, setOnDelete] = useState<CaseEntry>(null);
+    const [entry, setEntry] = useState<CaseEntry>({
+        id: undefined,
+        area: null,
+        address: '',
+        userId: null,
+        caseStatus: '',
+        caseDate: new Date(),
+        sagsId: null,
+        note: '',
+        completed: false,
+    });
 
     const sps = useRef<SPS>(new SPS());
     if (error) {
@@ -28,83 +39,86 @@ const App: FC = () => {
             const siteUrl = sps.current.getParameter('cbinfo.site.url');
             const logoUrl = sps.current.getParameter('module.tasm.logo');
             setLogo(siteUrl + logoUrl);
-            const uninhabitableList = await sps.current.getUninhabitableData();
-            setCaseData(uninhabitableList);
+
+            refresh();
         };
         getDataFromSps();
     }, []);
 
-    const onSave = async () => {
-        console.log('onSave');
-        // const entry: TimeEntry = {
-        //     userId: user.shortid,
-        //     taskDate,
-        //     taskTime,
-        //     taskId,
-        //     taskStart,
-        //     taskEnd,
-        //     note,
-        //     allDay,
-        // };
-        // eksistensen af editEntry afgør om det er en update eller insert
-        if (editEntry) {
-            console.log('update');
-            // entry.id = editEntry;
-            // await sps.current.updateTimeRegistration(entry);
-            // setEditEntry(null);
-        } else {
-            console.log('insert');
-            // await sps.current.insertTimeRegistration(entry);
-        }
-        // refresh();
+    const refresh = async () => {
+        const uninhabitableList = await sps.current.getUninhabitableData();
+        setCaseData(uninhabitableList);
     };
 
+    const onSave = async () => {
+        // eksistensen af entry.id afgør om det er en update eller insert
+        if (entry.id) {
+            await sps.current.updateCase(entry);
+        } else {
+            await sps.current.insertCase(entry);
+        }
+        refresh();
+    };
+
+    const confirmDelete = async () => {
+        await sps.current.deleteCase(onDelete.id);
+        setOnDelete(null)
+        closeModal();
+        refresh();
+    };
+    const closeModal = () => {
+        setOnDelete(null);
+    };
     const resetForm = () => {
-        console.log('resetFrom');
-        setEditEntry(null);
-        // setTaskTime(30);
-        // setTaskId(1);
-        // setTaskEnd(new Date(taskDate.setHours(0, 30, 0, 0)));
-        // setTaskStart(new Date(taskDate.setHours(0, 0, 0, 0)));
-        // setNote('');
-        // setAllDay(true);
+        setEntry({
+            id: undefined,
+            area: null,
+            address: '',
+            userId: user.shortid,
+            caseStatus: '',
+            caseDate: new Date(),
+            sagsId: null,
+            note: '',
+            completed: false,
+        });
         setError(null);
     };
 
-    const formInfo = ()=>{
-        // console.log('taskDate: ',taskDate)
-        // console.log('taskTime: ',taskTime)
-        const timeStamp = format(Date.now(), 'HH:mm:ss')
-        // console.log('taskEnd (',timeStamp,'): ',taskEnd)
-        // console.log('taskStart: ',taskStart)
-        // console.log('note: ',note)
-        // console.log('taskId: ',taskId)
-        // console.log('allDay: ',allDay)
-    }
+    const formInfo = () => {
+        console.log('entry: ', entry);
+    };
 
     return (
         <>
-            {user && <NavBar setIsCaseModalActive={setIsCaseModalActive} logo={logo} user={user} />}
+            {user && <NavBar setIsCaseModalActive={setIsCaseModalActive} logo={logo} user={user} resetForm={resetForm} formInfo={formInfo}/>}
             <section className="section">
                 <ContentEditable
                     tableContent={caseData}
                     onSave={onSave}
-                    setEditEntry={setEditEntry}
-                    resetForm={function (): void {
-                        throw new Error('Function not implemented.');
-                    }}
-                    setIsNewCaseActive={setIsNewCaseActive}
+                    resetForm={resetForm}
                     error={error}
                     setError={setError}
                     setIsCaseModalActive={setIsCaseModalActive}
-                    formInfo={formInfo} 
+                    formInfo={formInfo}
+                    entry={entry}
+                    setEntry={setEntry}
+                    setOnDelete={setOnDelete}
                 />
             </section>
             <CaseModal
-                    isActive={isCaseModalActive}
-                    onSave={onSave}
-                    setIsCaseModalActive={setIsCaseModalActive}
-                    formInfo={formInfo} 
+                isActive={isCaseModalActive}
+                onSave={onSave}
+                setIsCaseModalActive={setIsCaseModalActive}
+                formInfo={formInfo}
+                entry={entry}
+                setEntry={setEntry}
+                resetForm={resetForm}
+            />
+            <DeleteModal
+                confirmDelete={confirmDelete}
+                onDelete={onDelete}
+                setOnDelete={setOnDelete}
+                formInfo={formInfo}
             />
         </>
     );

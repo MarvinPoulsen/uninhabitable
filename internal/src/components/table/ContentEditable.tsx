@@ -19,7 +19,6 @@ interface CasesTable {
     completed: React.JSX.Element;
 }
 const columnHelper = createColumnHelper<CasesTable>();
-// console.log('columnHelper', columnHelper);
 
 const columns = [
     columnHelper.accessor('editRow', {
@@ -71,18 +70,15 @@ interface ContentEditableProps {
     setIsCaseModalActive: (isOn: boolean) => void;
     formInfo?: () => void;
     entry: CaseEntry;
-    setEntry: (entry: CaseEntry)=> void;
+    setEntry: (entry: CaseEntry) => void;
+    setOnDelete: (entry: CaseEntry) => void;
 }
 
 const ContentEditable = (props: ContentEditableProps) => {
     const [onContentEditable, setOnContentEditeble] = useState<number>(null); // indeholder id
 
     const handleOnEdit = (element) => {
-        console.log('entry1: ', props.entry)
-
-        console.log('handleOnEdit - element: ', element);
         try {
-            
             let newEntry = props && {
                 ...props.entry,
                 id: element.id,
@@ -94,26 +90,36 @@ const ContentEditable = (props: ContentEditableProps) => {
                 sagsId: element.sagsId,
                 note: element.note,
                 completed: element.completed,
-              };
-            props.setEntry(newEntry);              
+            };
+            props.setEntry(newEntry);
         } catch (error) {
             console.log('Noget gik galt - Kun tal er tilladt');
         }
-        console.log('entry2: ', props.entry)
-        props.setIsCaseModalActive(true)
-        // props.setEditEntry(element.id);
-        // props.setIsNewCaseActive(true);
-        // props.setError(null);
-        // setOnContentEditeble(element.id)
+        props.setIsCaseModalActive(true);
     };
-    const onDelete = (e) => {
-        console.log('e: ', e);
+    const onDelete = (element) => {
+        try {
+            let newEntry = props && {
+                ...props.entry,
+                id: element.id,
+                area: element.area,
+                address: element.address,
+                userId: element.userId,
+                caseStatus: element.caseStatus,
+                caseDate: element.caseDate,
+                sagsId: element.sagsId,
+                note: element.note,
+                completed: element.completed,
+            };
+            props.setOnDelete(newEntry);
+        } catch (error) {
+            console.log('Noget gik galt - Kun tal er tilladt');
+        }
     };
 
     const onChangeCompleted = (e) => {
         const id = parseInt(e.target.value);
         const on = e.target.checked;
-        // console.log('id - on: ', id, on);
     };
     const tableContent = props.tableContent.map((element) => {
         const dato = format(element.caseDate, 'dd-MM-yyyy');
@@ -126,7 +132,7 @@ const ContentEditable = (props: ContentEditableProps) => {
                 </a>
             ),
             deleteRow: (
-                <a onClick={() => onDelete(element.id)}>
+                <a onClick={() => onDelete(element)}>
                     <Icon path={mdiDelete} size={0.7} />
                 </a>
             ),
@@ -138,15 +144,15 @@ const ContentEditable = (props: ContentEditableProps) => {
             caseDate: dato,
             note: element.note,
             completed: (
-                <input 
-                    type="checkbox" 
-                    checked={element.completed} 
-                    // onChange={onChangeCompleted} 
-                    // value={element.id} 
-                    disabled 
+                <input
+                    type="checkbox"
+                    checked={element.completed}
+                    // onChange={onChangeCompleted}
+                    // value={element.id}
+                    disabled
                 />
             ),
-            id:element.id,
+            id: element.id,
         };
     });
 
@@ -154,6 +160,7 @@ const ContentEditable = (props: ContentEditableProps) => {
 
     // const [data, _setData] = useState(() => [...caseData]);
     const rerender = useReducer(() => ({}), {})[1];
+    
 
     const table = useReactTable({
         data,
@@ -161,8 +168,6 @@ const ContentEditable = (props: ContentEditableProps) => {
         getCoreRowModel: getCoreRowModel(),
     });
 
-    // console.log('getHeaderGroups: ',table.getHeaderGroups())
-    // console.log('getRowModel: ',table.getRowModel())
     return (
         <>
             <table className="table is-bordered is-narrow">
@@ -184,7 +189,6 @@ const ContentEditable = (props: ContentEditableProps) => {
                         <tr key={row.id}>
                             {row.getVisibleCells().map((cell) => (
                                 <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
-                                // <td key={cell.id} contentEditable={cell.row.original.id === onContentEditable} onClick={()=>console.log('cell: ',cell)}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
                             ))}
                         </tr>
                     ))}
