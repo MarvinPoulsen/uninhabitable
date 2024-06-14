@@ -1,4 +1,4 @@
-import React, { FC, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { SpsUser } from '../../SPS';
 import Icon from '@mdi/react';
 import { mdiAccount } from '@mdi/js';
@@ -19,7 +19,7 @@ interface NavBarProps {
     // setNote: (newNote) => void;
     // setTaskId: (newTaskId) => void;
     resetForm: () => void;
-    // formInfo?: () => void;
+    formInfo?: () => void;
 }
 const NavBar = (props: NavBarProps) => {
     const userName = props.user.name;
@@ -85,6 +85,9 @@ const handleNewCase = ()=>{
                     </div>
 
                     <div className="navbar-end">
+                        <a className="navbar-item" onClick={props.formInfo}>
+                            Test
+                        </a>
                     <div className="navbar-item">
                         <span id="user-name" className="navbar-item noHover">
                             {userName}
