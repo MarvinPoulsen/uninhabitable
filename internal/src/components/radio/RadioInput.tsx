@@ -20,7 +20,7 @@ const radioInput = (props: radioInputProps) => {
     const radioButtons: ReactElement[] = [];
     for (const option of radioOptions) {
         radioButtons.push(
-            <label className="radio">
+            <label className="radio" key={option}>
                 <input
                     type="radio"
                     name="member"
