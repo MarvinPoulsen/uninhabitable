@@ -4,7 +4,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import DatePicker from 'react-datepicker';
 import { da } from 'date-fns/locale';
 import Autocomplete from '../dawa/Autocomplete';
-import {statusOptions } from '../../config'
+import SelectInput from '../select/SelectInput';
+import RadioInput from '../radio/RadioInput';
 
 interface CaseModalProps {
     isActive: boolean;
@@ -17,10 +18,6 @@ interface CaseModalProps {
 }
 
 const CaseModal = (props: CaseModalProps) => {
-
-    
-    console.log(statusOptions);
-
     const handleAreaChange = (event) => {
         try {
             let newEntry = { ...props.entry };
@@ -28,15 +25,6 @@ const CaseModal = (props: CaseModalProps) => {
             props.setEntry(newEntry);
         } catch (error) {
             console.log('Noget gik galt - Kun tal er tilladt');
-        }
-    };
-    const handleUserIdChange = (event) => {
-        try {
-            let newEntry = { ...props.entry };
-            newEntry.userId = event.target.value;
-            props.setEntry(newEntry);
-        } catch (error) {
-            console.log('Noget gik galt!');
         }
     };
     const handleNoteChange = (event) => {
@@ -61,15 +49,6 @@ const CaseModal = (props: CaseModalProps) => {
         try {
             let newEntry = { ...props.entry };
             newEntry.sagsId = parseInt(event.target.value);
-            props.setEntry(newEntry);
-        } catch (error) {
-            console.log('Noget gik galt!');
-        }
-    };
-    const handleCaseStatusChange = (event) => {
-        try {
-            let newEntry = { ...props.entry };
-            newEntry.caseStatus = event.target.value;
             props.setEntry(newEntry);
         } catch (error) {
             console.log('Noget gik galt!');
@@ -136,55 +115,37 @@ const CaseModal = (props: CaseModalProps) => {
                                         </div>
                                     </div>
                                 </div>
+
                                 <div className="field is-horizontal">
                                     <div className="field-label is-normal">
                                         <label className="label">Status</label>
                                     </div>
                                     <div className="field-body">
-                                        <div className="field is-narrow">
+                                        <div className="field">
                                             <div className="control">
-                                                <div className="select is-fullwidth">
-                                                    <select
-                                            onChange={handleCaseStatusChange}
-                                            name="taskId"
-                                            value={props.entry.caseStatus}>
-                                                 {/* {props.entry.map((option) => (
-                                                <option
-                                                    key={option.id}
-                                                    value={option.id}
-                                                >
-                                                    {option.taskName}
-                                                </option>
-                                            ))} */}
-                                                        <option>Afventer</option>
-                                                        <option>I gang</option>
-                                                        <option>Mangler</option>
-                                                    </select>
-                                                </div>
+                                                {/* <div className="select is-fullwidth"> */}
+                                                <SelectInput entry={props.entry} setEntry={props.setEntry} />
+                                                {/* </div> */}
                                             </div>
+                                            <p className="help">Hjælpetekst til select input</p>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div className="field is-horizontal">
-                                    <div className="field-label is-normal">
-                                        <label className="label">Bruger</label>
+                                    <div className="field-label">
+                                        <label className="label">Sagsbeh.</label>
                                     </div>
                                     <div className="field-body">
                                         <div className="field">
-                                            <p className="control">
-                                                <input
-                                                    className="input"
-                                                    type="text"
-                                                    placeholder="Bruger"
-                                                    onChange={handleUserIdChange}
-                                                    name="userId"
-                                                    defaultValue={props.entry.userId}
-                                                />
-                                            </p>
-                                            <p className="help">Brug punktum til ciffertal</p>
+                                            <div className="control">
+                                                <RadioInput entry={props.entry} setEntry={props.setEntry} />
+                                            </div>
+                                            <p className="help">Hjælpetekst til radio input</p>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div className="field is-horizontal">
                                     <div className="field-label is-normal">
                                         <label className="label">Dato</label>
