@@ -4,6 +4,7 @@ import { CaseEntry } from '../../SPS';
 interface AutocompleteProps {
     entry: CaseEntry;
     setEntry: (entry: CaseEntry) => void;
+    kommunenr:string;
 }
 
 interface Suggestion {
@@ -13,8 +14,8 @@ interface Suggestion {
     };
 }
 
-const search = async (q: string) => {
-    const url = `https://api.dataforsyningen.dk/adresser/autocomplete?kommunekode=0360&srid=25832&per_side=5&q=${q}`;
+const search = async (q: string, kommunekode: string) => {
+    const url = `https://api.dataforsyningen.dk/adresser/autocomplete?kommunekode=${kommunekode}&srid=25832&per_side=5&q=${q}`;
     const req = await fetch(url);
     const result = await req.json();
     return result;
@@ -27,7 +28,7 @@ const Autocomplete: FC<AutocompleteProps> = (props: AutocompleteProps) => {
             let newEntry = { ...props.entry };
         newEntry.address = e.target.value;
         props.setEntry(newEntry);
-        const searchResult = await search(e.target.value);
+        const searchResult = await search(e.target.value, props.kommunenr);
         setSuggestions(searchResult);
         
     } catch (error) {

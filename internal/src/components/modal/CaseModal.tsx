@@ -15,6 +15,7 @@ interface CaseModalProps {
     entry: CaseEntry;
     setEntry: (entry: CaseEntry) => void;
     resetForm: () => void;
+    kommunenr: string;
 }
 
 const CaseModal = (props: CaseModalProps) => {
@@ -78,9 +79,11 @@ const CaseModal = (props: CaseModalProps) => {
     return (
         <>
             <div className={'modal' + (props.isActive ? ' is-active' : '')}>
-                <div className="modal-background" onClick={closeModal}></div>
+                <div className="modal-background"></div>
+                {/* <div className="modal-background" onClick={closeModal}></div> */}
                 <div className="modal-content">
                     <div className="box">
+                        <h1 className="title">Title</h1> {/* Brug evt. setIsCaseModalActive til at sætte Titlen */}
                         {props && (
                             <form onSubmit={handleSubmit}>
                                 <div className="field is-horizontal">
@@ -110,7 +113,11 @@ const CaseModal = (props: CaseModalProps) => {
                                     </div>
                                     <div className="field-body">
                                         <div className="field">
-                                            <Autocomplete entry={props.entry} setEntry={props.setEntry} />
+                                            <Autocomplete
+                                                entry={props.entry}
+                                                setEntry={props.setEntry}
+                                                kommunenr={props.kommunenr}
+                                            />
                                         </div>
                                     </div>
                                 </div>

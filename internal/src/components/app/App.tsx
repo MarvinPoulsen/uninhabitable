@@ -11,6 +11,7 @@ const App: FC = () => {
     const [logo, setLogo] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
     const [caseData, setCaseData] = useState<CaseEntry[]>([]);
+    const [kommunenr, setKommunenr] = useState<string>('');
 
     const [isCaseModalActive, setIsCaseModalActive] = useState<boolean>(false);
 
@@ -38,7 +39,9 @@ const App: FC = () => {
             setUser(user);
             const siteUrl = sps.current.getParameter('cbinfo.site.url');
             const logoUrl = sps.current.getParameter('module.tasm.logo');
+            const kommunenr = sps.current.getParameter('config.kommunenr.firecifre');
             setLogo(siteUrl + logoUrl);
+            setKommunenr(kommunenr);
 
             refresh();
         };
@@ -62,7 +65,7 @@ const App: FC = () => {
 
     const confirmDelete = async () => {
         await sps.current.deleteCase(onDelete.id);
-        setOnDelete(null)
+        setOnDelete(null);
         closeModal();
         refresh();
     };
@@ -90,7 +93,15 @@ const App: FC = () => {
 
     return (
         <>
-            {user && <NavBar setIsCaseModalActive={setIsCaseModalActive} logo={logo} user={user} resetForm={resetForm} formInfo={formInfo}/>}
+            {user && (
+                <NavBar
+                    setIsCaseModalActive={setIsCaseModalActive}
+                    logo={logo}
+                    user={user}
+                    resetForm={resetForm}
+                    formInfo={formInfo}
+                />
+            )}
             <section className="section">
                 <ContentEditable
                     tableContent={caseData}
@@ -113,13 +124,9 @@ const App: FC = () => {
                 entry={entry}
                 setEntry={setEntry}
                 resetForm={resetForm}
+                kommunenr={kommunenr}
             />
-            <DeleteModal
-                confirmDelete={confirmDelete}
-                onDelete={onDelete}
-                setOnDelete={setOnDelete}
-                formInfo={formInfo}
-            />
+            <DeleteModal confirmDelete={confirmDelete} onDelete={onDelete} setOnDelete={setOnDelete} formInfo={formInfo} />
         </>
     );
 };
