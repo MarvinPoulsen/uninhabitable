@@ -5,6 +5,7 @@
 	<!-- The version of this module -->
 	<param name="uninhabitable.skin_name">base</param>
 	<param name="uninhabitable.statusOptions">Startet;Afventer;Mangler;I gang</param>
+	<param name="uninhabitable.radioOptions">marpo;mewh;viny</param>
 	<!-- <param name="uninhabitable.skin_name">skin_lolland</param> -->
 	
     <copydir fromdir="[module:uninhabitable.dir]/internal/dist" todir="[cbinfo.wwwroot.dir]/modules/uninhabitable" />
