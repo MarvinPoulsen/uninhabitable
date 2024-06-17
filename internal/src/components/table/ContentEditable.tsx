@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { CaseEntry } from '../../SPS';
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import Icon from '@mdi/react';
@@ -123,7 +123,6 @@ const ContentEditable = (props: ContentEditableProps) => {
     };
     const tableContent = props.tableContent.map((element) => {
         const dato = format(element.caseDate, 'dd-MM-yyyy');
-        // const dato = 'dd-MM-yyyy';
 
         return {
             editRow: (
@@ -157,11 +156,7 @@ const ContentEditable = (props: ContentEditableProps) => {
     });
 
     const data = useMemo(() => tableContent, [props.tableContent]);
-
-    // const [data, _setData] = useState(() => [...caseData]);
-    const rerender = useReducer(() => ({}), {})[1];
-    
-
+ 
     const table = useReactTable({
         data,
         columns,
@@ -194,9 +189,6 @@ const ContentEditable = (props: ContentEditableProps) => {
                     ))}
                 </tbody>
             </table>
-            <button onClick={() => rerender()} className="button">
-                Rerender
-            </button>
         </>
     );
 };

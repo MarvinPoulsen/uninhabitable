@@ -80,7 +80,6 @@ const CaseModal = (props: CaseModalProps) => {
             <div className={'modal' + (props.isActive ? ' is-active' : '')}>
                 <div className="modal-background" onClick={closeModal}></div>
                 <div className="modal-content">
-                    {/* Any other Bulma elements you want  */}
                     <div className="box">
                         {props && (
                             <form onSubmit={handleSubmit}>
@@ -123,9 +122,7 @@ const CaseModal = (props: CaseModalProps) => {
                                     <div className="field-body">
                                         <div className="field">
                                             <div className="control">
-                                                {/* <div className="select is-fullwidth"> */}
                                                 <SelectInput entry={props.entry} setEntry={props.setEntry} />
-                                                {/* </div> */}
                                             </div>
                                             <p className="help">Hjælpetekst til select input</p>
                                         </div>
@@ -223,59 +220,6 @@ const CaseModal = (props: CaseModalProps) => {
                                         </div>
                                     </div>
                                 </div>
-                                {/* <div className="field is-horizontal">
-    <div className="field-label"></div>
-    <div className="field-body">
-        <div className="field is-expanded">
-            <div className="field has-addons">
-                <p className="control">
-                    <a className="button is-static">+44</a>
-                </p>
-                <p className="control is-expanded">
-                    <input className="input" type="tel" placeholder="Your phone number" />
-                </p>
-            </div>
-            <p className="help">Do not enter the first zero</p>
-        </div>
-    </div>
-</div> */}
-                                {/* <div className="field is-horizontal">
-    <div className="field-label is-normal">
-        <label className="label">Department</label>
-    </div>
-    <div className="field-body">
-        <div className="field is-narrow">
-            <div className="control">
-                <div className="select is-fullwidth">
-                    <select>
-                        <option>Business development</option>
-                        <option>Marketing</option>
-                        <option>Sales</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> */}
-                                {/* <div className="field is-horizontal">
-    <div className="field-label">
-        <label className="label">Already a member?</label>
-    </div>
-    <div className="field-body">
-        <div className="field is-narrow">
-            <div className="control">
-                <label className="radio">
-                    <input type="radio" name="member" />
-                    Yes
-                </label>
-                <label className="radio">
-                    <input type="radio" name="member" />
-                    No
-                </label>
-            </div>
-        </div>
-    </div>
-</div> */}
                                 <div className="field is-grouped">
                                     <div className="control">
                                         <button className="button is-link">Save</button>
@@ -285,14 +229,14 @@ const CaseModal = (props: CaseModalProps) => {
                                             Reset
                                         </button>
                                     </div>
-                                    <div className="control">
+                                    {/* <div className="control">
                                         <button className="button is-info" type="button" onClick={props.formInfo}>
                                             Info
                                         </button>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </form>
-                        )}{' '}
+                        )}
                     </div>
                 </div>
                 <button className="modal-close is-large" aria-label="close" onClick={closeModal}></button>

@@ -25,10 +25,10 @@ const NavBar = (props: NavBarProps) => {
     const userName = props.user.name;
     const [isActiveTab, setActiveTab] = useState<Tab>(null);
 
-const handleNewCase = ()=>{
-    props.resetForm()
-    props.setIsCaseModalActive(true)
-}
+    const handleNewCase = () => {
+        props.resetForm();
+        props.setIsCaseModalActive(true);
+    };
 
     return (
         <>
@@ -85,17 +85,17 @@ const handleNewCase = ()=>{
                     </div>
 
                     <div className="navbar-end">
-                        <a className="navbar-item" onClick={props.formInfo}>
+                        {/* <a className="navbar-item" onClick={props.formInfo}>
                             Test
-                        </a>
-                    <div className="navbar-item">
-                        <span id="user-name" className="navbar-item noHover">
-                            {userName}
-                        </span>
-                        <span className="icon is-large">
-                            <Icon path={mdiAccount} size={1.2} />
-                        </span>
-                    </div>
+                        </a> */}
+                        <div className="navbar-item">
+                            <span id="user-name" className="navbar-item noHover">
+                                {userName}
+                            </span>
+                            <span className="icon is-large">
+                                <Icon path={mdiAccount} size={1.2} />
+                            </span>
+                        </div>
                     </div>
                 </div>
             </nav>
