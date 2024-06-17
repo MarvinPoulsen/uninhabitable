@@ -1,15 +1,15 @@
 @charset "utf-8";
-
 // You can import only what you need from Bulma, and customize it with your own Sass values.
-
 // To achieve this:
-
 // set your own Sass variables
 // import bulma/sass/utilities
 // override Bulma’s variables by providing the with keyword with your own Sass map
 // if you need to, do the same for the bulma/sass/form folder
 // import the Bulma components you need with either @use or @forward
 // finally, import the Bulma themes from bulma/sass/themes
+
+// Set your Sass variables as brand
+// $brand-radius:0.0em;
 
 // 2. Set your brand colors
 // Lolland colors Pantone 294
@@ -57,12 +57,14 @@ $umbra-20: #E6E5D6;
 // Add a serif family
 $family-serif: "Nunito", "Verdana", "Georgia", serif;
 
+
 // Override global Sass variables from the /utilities folder
 @use "../node_modules/bulma/sass/utilities" with (
   $family-primary: $family-serif,
   $primary: $umbra,
   $link: $umbra,
-  $control-border-width: 2px
+  // $control-border-width: 2px
+  // $radius: $brand-radius,
 );
 
 // Import the components you need
@@ -91,4 +93,7 @@ $family-serif: "Nunito", "Verdana", "Georgia", serif;
 
 .noHover{
     pointer-events: none;
+}
+input[type="radio"] {
+  margin-right: 5px;
 }
