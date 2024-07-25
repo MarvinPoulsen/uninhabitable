@@ -102,7 +102,7 @@ export default class SPS {
     }
 
     async getUninhabitableData(): Promise<CaseEntry[]> {
-        const data = await this.executeOnDs('lk_uninhabitable_editor', { command: 'read-all' });
+        const data = await this.executeOnDs('lk_uninhabitable_watch', { command: 'read-all' });
         // console.log('data: ',data)
         const caseEntries: CaseEntry[] = data.map((element) => {
             return {

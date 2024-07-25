@@ -114,6 +114,7 @@ const App: FC = () => {
                     entry={entry}
                     setEntry={setEntry}
                     setOnDelete={setOnDelete}
+                    user={user}
                 />
             </section>
             <CaseModal

@@ -41,9 +41,9 @@ const NavBar = (props: NavBarProps) => {
 
                 <div id="navbarKondem" className="navbar-menu">
                     <div className="navbar-start">
-                        <a className="navbar-item" onClick={handleNewCase}>
+                        {props.user.hasPermission('ep_lk_uninhabitable_editor') && (<a className="navbar-item" onClick={handleNewCase}>
                             Opret Kondemnering
-                        </a>
+                        </a>)}
                         <div className="navbar-item has-dropdown is-hoverable" key={isActiveTab}>
                             {/* <div className="navbar-item has-dropdown is-active"> */}
                             <a className="navbar-link" href="https://bulma.io/documentation/overview/start/">

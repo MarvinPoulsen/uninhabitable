@@ -1,14 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <datasources>
-    <endpoint endpointtype="[cbinfo.connection.lolland_postgis.type]" name="ep_lk_uninhabitable">
+    <endpoint endpointtype="[cbinfo.connection.lolland_postgis.type]" name="ep_lk_uninhabitable_watch">
         <connect>[cbinfo.connection.lolland_postgis.url]</connect>
         <user>[cbinfo.connection.lolland_postgis.user]</user>
         <pwd>[cbinfo.connection.lolland_postgis.pwd]</pwd>
     </endpoint>
-    <datasource endpoint="ep_lk_uninhabitable" name="lk_uninhabitable_editor">
-        <!-- <debug>true</debug> -->
+    <datasource endpoint="ep_lk_uninhabitable_watch" name="lk_uninhabitable_watch">
+                <!-- <debug>true</debug> -->
         <table name="uninhabitable" pkcolumn="id" schema="byg_kondemnering"/>
         <sql command="read-all">select * from byg_kondemnering.uninhabitable;</sql>
+    </datasource>
+    <!-- EDITOR -->
+    <endpoint endpointtype="[cbinfo.connection.lolland_postgis.type]" name="ep_lk_uninhabitable_editor" permissionlevel="authorized">
+    <!-- <endpoint endpointtype="[cbinfo.connection.lolland_postgis.type]" name="ep_lk_uninhabitable_editor"> -->
+             <debug>true</debug>
+        <connect>[cbinfo.connection.lolland_postgis.url]</connect>
+        <user>[cbinfo.connection.lolland_postgis.user]</user>
+        <pwd>[cbinfo.connection.lolland_postgis.pwd]</pwd>
+    </endpoint>
+    <datasource endpoint="ep_lk_uninhabitable_editor" name="lk_uninhabitable_editor">
+        <!-- <debug>true</debug> -->
+        <table name="uninhabitable" pkcolumn="id" schema="byg_kondemnering"/>
         <sql command="insert-case">
             insert into 
                 byg_kondemnering.uninhabitable(
