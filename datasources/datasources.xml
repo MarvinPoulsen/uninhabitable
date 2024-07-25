@@ -13,7 +13,6 @@
     <!-- EDITOR -->
     <endpoint endpointtype="[cbinfo.connection.lolland_postgis.type]" name="ep_lk_uninhabitable_editor" permissionlevel="authorized">
     <!-- <endpoint endpointtype="[cbinfo.connection.lolland_postgis.type]" name="ep_lk_uninhabitable_editor"> -->
-             <debug>true</debug>
         <connect>[cbinfo.connection.lolland_postgis.url]</connect>
         <user>[cbinfo.connection.lolland_postgis.user]</user>
         <pwd>[cbinfo.connection.lolland_postgis.pwd]</pwd>

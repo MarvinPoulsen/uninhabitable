@@ -124,16 +124,16 @@ const ContentEditable = (props: ContentEditableProps) => {
     };
     const tableContent = props.tableContent.map((element) => {
         const dato = format(element.caseDate, 'dd-MM-yyyy');
-    const editable = props.user.hasPermission('ep_lk_uninhabitable_editor') ? (<Icon path={mdiPencil} size={0.7} />) : (<Icon path={mdiPencil} size={0.7} color='lightgray'/>);
-    const deleteable = props.user.hasPermission('ep_lk_uninhabitable_editor') ? (<Icon path={mdiDelete} size={0.7} />) : (<Icon path={mdiDelete} size={0.7} color='lightgray'/>);
+    const editable = props.user.hasPermission('endpoint.ep_lk_uninhabitable_editor') ? (<Icon path={mdiPencil} size={0.7} />) : (<Icon path={mdiPencil} size={0.7} color='lightgray'/>);
+    const deleteable = props.user.hasPermission('endpoint.ep_lk_uninhabitable_editor') ? (<Icon path={mdiDelete} size={0.7} />) : (<Icon path={mdiDelete} size={0.7} color='lightgray'/>);
         return {
             editRow: (
-                <a onClick={() => props.user.hasPermission('ep_lk_uninhabitable_editor') && handleOnEdit(element)}>
+                <a onClick={() => props.user.hasPermission('endpoint.ep_lk_uninhabitable_editor') && handleOnEdit(element)}>
                     {editable}
                 </a>
             ),
             deleteRow: (
-                <a onClick={() => props.user.hasPermission('ep_lk_uninhabitable_editor') && onDelete(element)}>
+                <a onClick={() => props.user.hasPermission('endpoint.ep_lk_uninhabitable_editor') && onDelete(element)}>
                     {deleteable}
                 </a>
             ),
