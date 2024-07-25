@@ -45,12 +45,12 @@ const selectInput = (props: selectInputProps) => {
         };
     };
 
-    // Definerer custom styles til react-select
+    // Definerer custom styles til react-select - Use React Select styles prop to override the styles.
     const customStyles = {
         // Styrer containerens stil
         control: (baseStyles, state) => ({
             ...baseStyles,
-            // Ændrer borderfarven baseret på om elementet er fokuseret eller valgt
+            // Ændrer borderfarven baseret på om elementet er fokuseret eller valgt - take the base styles, spread them , and, finally, override the desired styles with our custom styles
             borderColor: state.isFocused
                 ? 'rgb(131, 125, 52)'
                 : state.isSelected
