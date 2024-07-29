@@ -127,10 +127,10 @@ const ContentEditable = (props: ContentEditableProps) => {
     const approved = props.user.hasPermission('endpoint.ep_lk_uninhabitable_editor');    
     const createIcon = (path, action, element) => {
         const color = approved ? undefined : 'lightgray';
-        const cursor = approved ? 'default' : 'not-allowed';
+        const cursor = approved ? 'pointer' : 'not-allowed';
         return (
             <a onClick={() => approved && action(element)} style={{ cursor }}>
-                <Icon path={path} size={0.7} color={color} />
+                <Icon path={path} size={0.75} color={color} />
             </a>
         );
     };
@@ -145,7 +145,7 @@ const ContentEditable = (props: ContentEditableProps) => {
             caseStatus: element.caseStatus,
             caseDate: dato,
             note: element.note,
-            completed: element.completed ? <Icon path={mdiCheck} size={0.7} /> : <></>,
+            completed: element.completed ? <Icon path={mdiCheck} size={0.75} /> : <></>,
                  
                 // <input
                 //     type="checkbox"

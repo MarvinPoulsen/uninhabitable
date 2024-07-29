@@ -61,7 +61,7 @@ $family-serif: 'Nunito', 'Verdana', 'Georgia', serif;
 @use '../node_modules/bulma/sass/utilities' with (
     $family-primary: $family-serif,
     $primary: $dark-blue-40,
-    // $link: $umbra,
+    $link: $blue-green,
     // $control-border-width: 2px
     // $radius: $brand-radius,
     $custom-colors:(
