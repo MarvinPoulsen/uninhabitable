@@ -46,37 +46,37 @@ const NavBar = (props: NavBarProps) => {
                         </a>)}
                         <div className="navbar-item has-dropdown is-hoverable" key={isActiveTab}>
                             {/* <div className="navbar-item has-dropdown is-active"> */}
-                            <a className="navbar-link" href="https://bulma.io/documentation/overview/start/">
+                            <a className="navbar-link" href="">
                                 {' '}
                                 Docs{' '}
                             </a>
                             <div className="navbar-dropdown is-boxed">
-                                <a className="navbar-item" href="https://bulma.io/documentation/overview/start/">
+                                <a className="navbar-item" href="">
                                     {' '}
                                     Overview{' '}
                                 </a>
-                                <a className="navbar-item" href="https://bulma.io/documentation/overview/modifiers/">
+                                <a className="navbar-item" href="">
                                     {' '}
                                     Modifiers{' '}
                                 </a>
                                 <hr className="navbar-divider" />
-                                <a className="navbar-item" href="https://bulma.io/documentation/columns/basics/">
+                                <a className="navbar-item" href="">
                                     {' '}
                                     Columns{' '}
                                 </a>
-                                <a className="navbar-item is-selected" href="https://bulma.io/documentation/layout/container/">
+                                <a className="navbar-item is-selected" href="">
                                     {' '}
                                     Layout{' '}
                                 </a>
-                                <a className="navbar-item" href="https://bulma.io/documentation/form/general/">
+                                <a className="navbar-item" href="">
                                     {' '}
                                     Form{' '}
                                 </a>
-                                <a className="navbar-item" href="https://bulma.io/documentation/elements/box/">
+                                <a className="navbar-item" href="">
                                     {' '}
                                     Elements{' '}
                                 </a>
-                                <a className="navbar-item" href="https://bulma.io/documentation/components/breadcrumb/">
+                                <a className="navbar-item" href="">
                                     {' '}
                                     Components{' '}
                                 </a>

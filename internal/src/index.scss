@@ -14,86 +14,92 @@
 // 2. Set your brand colors
 // Lolland colors Pantone 294
 $dark-blue: #003478;
-$dark-blue-80: #335D93;
-$dark-blue-60: #6685AE;
-$dark-blue-40: #99AEC9;
-$dark-blue-20: #CCD6E4;
+$dark-blue-80: #335d93;
+$dark-blue-60: #6685ae;
+$dark-blue-40: #99aec9;
+$dark-blue-20: #ccd6e4;
 
 // Lolland colors Pantone 369
 $green: #58a618;
-$green-80: #70B65F;
-$green-60: #91C483;
-$green-40: #BCD5A7;
-$green-20: #D5E7CF;
+$green-80: #70b65f;
+$green-60: #91c483;
+$green-40: #bcd5a7;
+$green-20: #d5e7cf;
 
 // Lolland colors Pantone 2905
-$light-blue: #8FC9E6;
-$light-blue-80: #A4D4E4;
-$light-blue-60: #BBDEF0;
-$light-blue-40: #D2E9F3;
-$light-blue-20: #E8F3F8;
+$light-blue: #8fc9e6;
+$light-blue-80: #a4d4e4;
+$light-blue-60: #bbdef0;
+$light-blue-40: #d2e9f3;
+$light-blue-20: #e8f3f8;
 
 // Lolland colors Pantone 638
-$blue-green: #009BBB;
-$blue-green-80: #33AFC9;
-$blue-green-60: #66C3D6;
-$blue-green-40: #99D7E4;
-$blue-green-20: #CCEBF1;
+$blue-green: #009bbb;
+$blue-green-80: #33afc9;
+$blue-green-60: #66c3d6;
+$blue-green-40: #99d7e4;
+$blue-green-20: #ccebf1;
 
 // Lolland colors Pantone 382
-$lime-green: #BED600;
-$lime-green-80: #CBDE33;
-$lime-green-60: #D8E666;
-$lime-green-40: #E5EF99;
-$lime-green-20: #F2F7CC;
+$lime-green: #bed600;
+$lime-green-80: #cbde33;
+$lime-green-60: #d8e666;
+$lime-green-40: #e5ef99;
+$lime-green-20: #f2f7cc;
 
 // Lolland colors Pantone 5825
-$umbra: #827C34;
-$umbra-80: #9B965D;
-$umbra-60: #B4B085;
-$umbra-40: #CDCBAE;
-$umbra-20: #E6E5D6;
+$umbra: #827c34;
+$umbra-80: #9b965d;
+$umbra-60: #b4b085;
+$umbra-40: #cdcbae;
+$umbra-20: #e6e5d6;
 
 // Add a serif family
-$family-serif: "Nunito", "Verdana", "Georgia", serif;
-
+$family-serif: 'Nunito', 'Verdana', 'Georgia', serif;
 
 // Override global Sass variables from the /utilities folder
-@use "../node_modules/bulma/sass/utilities" with (
-  $family-primary: $family-serif,
-  $primary: $umbra,
-  $link: $umbra,
-  // $control-border-width: 2px
-  // $radius: $brand-radius,
+@use '../node_modules/bulma/sass/utilities' with (
+    $family-primary: $family-serif,
+    $primary: $dark-blue-40,
+    // $link: $umbra,
+    // $control-border-width: 2px
+    // $radius: $brand-radius,
+    $custom-colors:(
+      'umbra-dark':($umbra),
+      'umbra': ($umbra-80),
+      'umbra-light': ($umbra-60),
+      'umbra-lighter': ($umbra-40),
+      'umbra-lightest': ($umbra-20)
+    )
 );
 
 // Import the components you need
-@forward "../node_modules/bulma/sass/base";
-@forward "../node_modules/bulma/sass/components/card";
-@forward "../node_modules/bulma/sass/components/modal";
-@forward "../node_modules/bulma/sass/components/navbar";
-@forward "../node_modules/bulma/sass/components/dropdown";
-@forward "../node_modules/bulma/sass/elements/button";
-@forward "../node_modules/bulma/sass/elements/delete";
-@forward "../node_modules/bulma/sass/elements/icon";
-@forward "../node_modules/bulma/sass/elements/content";
-@forward "../node_modules/bulma/sass/elements/title";
-@forward "../node_modules/bulma/sass/elements/table";
-@forward "../node_modules/bulma/sass/elements/box";
-@forward "../node_modules/bulma/sass/layout/container";
-@forward "../node_modules/bulma/sass/layout/section";
-@forward "../node_modules/bulma/sass/form";
+@forward '../node_modules/bulma/sass/base';
+@forward '../node_modules/bulma/sass/components/card';
+@forward '../node_modules/bulma/sass/components/modal';
+@forward '../node_modules/bulma/sass/components/navbar';
+@forward '../node_modules/bulma/sass/components/dropdown';
+@forward '../node_modules/bulma/sass/elements/button';
+@forward '../node_modules/bulma/sass/elements/delete';
+@forward '../node_modules/bulma/sass/elements/icon';
+@forward '../node_modules/bulma/sass/elements/content';
+@forward '../node_modules/bulma/sass/elements/title';
+@forward '../node_modules/bulma/sass/elements/table';
+@forward '../node_modules/bulma/sass/elements/box';
+@forward '../node_modules/bulma/sass/layout/container';
+@forward '../node_modules/bulma/sass/layout/section';
+@forward '../node_modules/bulma/sass/form';
+@forward '../node_modules/bulma/sass/helpers';
 
 // Import the themes so that all CSS variables have a value
-@forward "../node_modules/bulma/sass/themes";
+@forward '../node_modules/bulma/sass/themes';
 
 // Import the Google Font
-@import url("https://fonts.googleapis.com/css?family=Nunito:400,700");
+@import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
 
-
-.noHover{
+.noHover {
     pointer-events: none;
 }
-input[type="radio"] {
-  margin-right: 5px;
+input[type='radio'] {
+    margin-right: 5px;
 }

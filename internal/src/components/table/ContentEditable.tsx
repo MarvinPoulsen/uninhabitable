@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { CaseEntry, SpsUser } from '../../SPS';
 import { createColumnHelper, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
 import Icon from '@mdi/react';
-import { mdiDelete, mdiPencil } from '@mdi/js';
+import { mdiCheck, mdiDelete, mdiPencil } from '@mdi/js';
 import { format } from 'date-fns';
 
 interface CasesTable {
@@ -124,19 +124,20 @@ const ContentEditable = (props: ContentEditableProps) => {
     };
     const tableContent = props.tableContent.map((element) => {
         const dato = format(element.caseDate, 'dd-MM-yyyy');
-    const editable = props.user.hasPermission('endpoint.ep_lk_uninhabitable_editor') ? (<Icon path={mdiPencil} size={0.7} />) : (<Icon path={mdiPencil} size={0.7} color='lightgray'/>);
-    const deleteable = props.user.hasPermission('endpoint.ep_lk_uninhabitable_editor') ? (<Icon path={mdiDelete} size={0.7} />) : (<Icon path={mdiDelete} size={0.7} color='lightgray'/>);
-        return {
-            editRow: (
-                <a onClick={() => props.user.hasPermission('endpoint.ep_lk_uninhabitable_editor') && handleOnEdit(element)}>
-                    {editable}
-                </a>
-            ),
-            deleteRow: (
-                <a onClick={() => props.user.hasPermission('endpoint.ep_lk_uninhabitable_editor') && onDelete(element)}>
-                    {deleteable}
-                </a>
-            ),
+    const approved = props.user.hasPermission('endpoint.ep_lk_uninhabitable_editor');    
+    const createIcon = (path, action, element) => {
+        const color = approved ? undefined : 'lightgray';
+        const cursor = approved ? 'default' : 'not-allowed';
+        return (
+            <a onClick={() => approved && action(element)} style={{ cursor }}>
+                <Icon path={path} size={0.7} color={color} />
+            </a>
+        );
+    };
+    
+    return {
+        editRow: createIcon(mdiPencil, handleOnEdit, element),
+        deleteRow: createIcon(mdiDelete, onDelete, element),
             area: element.area,
             address: element.address,
             userId: element.userId,
@@ -144,15 +145,16 @@ const ContentEditable = (props: ContentEditableProps) => {
             caseStatus: element.caseStatus,
             caseDate: dato,
             note: element.note,
-            completed: (
-                <input
-                    type="checkbox"
-                    checked={element.completed}
-                    // onChange={onChangeCompleted}
-                    // value={element.id}
-                    disabled
-                />
-            ),
+            completed: element.completed ? <Icon path={mdiCheck} size={0.7} /> : <></>,
+                 
+                // <input
+                //     type="checkbox"
+                //     checked={element.completed}
+                //     // onChange={onChangeCompleted}
+                //     // value={element.id}
+                //     disabled
+                // />
+            
             id: element.id,
         };
     });
@@ -170,9 +172,9 @@ const ContentEditable = (props: ContentEditableProps) => {
             <table className="table is-bordered is-narrow">
                 <thead>
                     {table.getHeaderGroups().map((headerGroup) => (
-                        <tr key={headerGroup.id}>
+                        <tr key={headerGroup.id} className="is-umbra">
                             {headerGroup.headers.map((header) => (
-                                <th key={header.id} className="is-light">
+                                <th key={header.id} className="has-text-white has-background-umbra-dark">
                                     {header.isPlaceholder
                                         ? null
                                         : flexRender(header.column.columnDef.header, header.getContext())}
@@ -180,16 +182,19 @@ const ContentEditable = (props: ContentEditableProps) => {
                             ))}
                         </tr>
                     ))}
-                </thead>
-                <tbody>
-                    {table.getRowModel().rows.map((row) => (
-                        <tr key={row.id}>
-                            {row.getVisibleCells().map((cell) => (
-                                <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
-                            ))}
-                        </tr>
-                    ))}
-                </tbody>
+                </thead><tbody>
+    {table.getRowModel().rows.map((row) => {
+        const isCompleted = row.original.completed.props.path !== undefined ? 'has-background-umbra-lightest' : undefined;
+        return (
+            <tr key={row.id} className={isCompleted}>
+                {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+                ))}
+            </tr>
+        )
+    })}
+</tbody>
+
             </table>
         </>
     );
