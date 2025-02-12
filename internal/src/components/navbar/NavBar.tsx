@@ -41,7 +41,7 @@ const NavBar = (props: NavBarProps) => {
 
                 <div id="navbarKondem" className="navbar-menu">
                     <div className="navbar-start">
-                        {props.user.hasPermission('endpoint.ep_lk_uninhabitable_editor') && (<a className="navbar-item" onClick={handleNewCase}>
+                        {props.user.hasPermission('endpoint.ep_lk_owntable_editor') && (<a className="navbar-item" onClick={handleNewCase}>
                             Opret Kondemnering
                         </a>)}
                         <div className="navbar-item has-dropdown is-hoverable" key={isActiveTab}>

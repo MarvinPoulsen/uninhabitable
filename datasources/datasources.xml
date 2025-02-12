@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <datasources>
-    <endpoint endpointtype="[cbinfo.connection.lolland_postgis.type]" name="ep_lk_uninhabitable_watch">
+    <endpoint endpointtype="[cbinfo.connection.lolland_postgis.type]" name="ep_lk_owntable_watch">
         <connect>[cbinfo.connection.lolland_postgis.url]</connect>
         <user>[cbinfo.connection.lolland_postgis.user]</user>
         <pwd>[cbinfo.connection.lolland_postgis.pwd]</pwd>
     </endpoint>
-    <datasource endpoint="ep_lk_uninhabitable_watch" name="lk_uninhabitable_watch">
+    <datasource endpoint="ep_lk_owntable_watch" name="lk_owntable_watch">
                 <!-- <debug>true</debug> -->
-        <table name="uninhabitable" pkcolumn="id" schema="byg_kondemnering"/>
-        <sql command="read-all">select * from byg_kondemnering.uninhabitable;</sql>
+        <table name="owntable" pkcolumn="id" schema="byg_kondemnering"/>
+        <sql command="read-all">select * from byg_kondemnering.owntable;</sql>
     </datasource>
     <!-- EDITOR -->
-    <endpoint endpointtype="[cbinfo.connection.lolland_postgis.type]" name="ep_lk_uninhabitable_editor" permissionlevel="authorized">
-    <!-- <endpoint endpointtype="[cbinfo.connection.lolland_postgis.type]" name="ep_lk_uninhabitable_editor"> -->
+    <endpoint endpointtype="[cbinfo.connection.lolland_postgis.type]" name="ep_lk_owntable_editor" permissionlevel="authorized">
+    <!-- <endpoint endpointtype="[cbinfo.connection.lolland_postgis.type]" name="ep_lk_owntable_editor"> -->
         <connect>[cbinfo.connection.lolland_postgis.url]</connect>
         <user>[cbinfo.connection.lolland_postgis.user]</user>
         <pwd>[cbinfo.connection.lolland_postgis.pwd]</pwd>
     </endpoint>
-    <datasource endpoint="ep_lk_uninhabitable_editor" name="lk_uninhabitable_editor">
+    <datasource endpoint="ep_lk_owntable_editor" name="lk_owntable_editor">
         <!-- <debug>true</debug> -->
-        <table name="uninhabitable" pkcolumn="id" schema="byg_kondemnering"/>
+        <table name="owntable" pkcolumn="id" schema="byg_kondemnering"/>
         <sql command="insert-case">
             insert into 
-                byg_kondemnering.uninhabitable(
+                byg_kondemnering.owntable(
                     area,
                     address,
                     user_id,
@@ -47,9 +47,9 @@
                     [boolean:completed='true']
                 );
         </sql>
-        <sql command="delete-by-id">delete from byg_kondemnering.uninhabitable where id=[number:id];</sql>
+        <sql command="delete-by-id">delete from byg_kondemnering.owntable where id=[number:id];</sql>
         <sql command="update-by-id">
-            update byg_kondemnering.uninhabitable
+            update byg_kondemnering.owntable
             set 
                 area = [number:if isdefined (area) then area else NULL endif],
                 address = [string:if isdefined (address) then address else NULL endif],

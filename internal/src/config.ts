@@ -1,8 +1,8 @@
-const statusOptionsParam = '[uninhabitable.statusOptions]';
+const statusOptionsParam = '[owntable.statusOptions]';
 const statusOptionsDev = 'Startet;Afventer;Mangler;I gang';
 export const statusOptions = statusOptionsParam.includes('[') ? statusOptionsDev.split(';') : statusOptionsParam.split(';');
 
-const radioOptionsParam = '[uninhabitable.radioOptions]';
+const radioOptionsParam = '[owntable.radioOptions]';
 const radioOptionsDev = 'marpo;mewh;viny';
 
 export const radioOptions = radioOptionsParam.includes('[') ? radioOptionsDev.split(';') : radioOptionsParam.split(';');

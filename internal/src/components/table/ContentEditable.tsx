@@ -124,7 +124,7 @@ const ContentEditable = (props: ContentEditableProps) => {
     };
     const tableContent = props.tableContent.map((element) => {
         const dato = format(element.caseDate, 'dd-MM-yyyy');
-    const approved = props.user.hasPermission('endpoint.ep_lk_uninhabitable_editor');    
+    const approved = props.user.hasPermission('endpoint.ep_lk_owntable_editor');    
     const createIcon = (path, action, element) => {
         const color = approved ? undefined : 'lightgray';
         const cursor = approved ? 'pointer' : 'not-allowed';

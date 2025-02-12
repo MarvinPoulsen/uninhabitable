@@ -49,8 +49,8 @@ const App: FC = () => {
     }, []);
 
     const refresh = async () => {
-        const uninhabitableList = await sps.current.getUninhabitableData();
-        setCaseData(uninhabitableList);
+        const owntableList = await sps.current.getowntableData();
+        setCaseData(owntableList);
     };
 
     const onSave = async () => {

@@ -101,8 +101,8 @@ export default class SPS {
         });
     }
 
-    async getUninhabitableData(): Promise<CaseEntry[]> {
-        const data = await this.executeOnDs('lk_uninhabitable_watch', { command: 'read-all' });
+    async getowntableData(): Promise<CaseEntry[]> {
+        const data = await this.executeOnDs('lk_owntable_watch', { command: 'read-all' });
         // console.log('data: ',data)
         const caseEntries: CaseEntry[] = data.map((element) => {
             return {
@@ -124,7 +124,7 @@ export default class SPS {
         // console.log('allDay: ',typeof entry.allDay)
 
         try {
-            await this.executeOnDs('lk_uninhabitable_editor', {
+            await this.executeOnDs('lk_owntable_editor', {
                 command: 'insert-case',
                 ...entry,
                 caseDate: format(entry.caseDate, 'yyyy-MM-dd'),
@@ -136,21 +136,21 @@ export default class SPS {
     }
 
     async deleteCase(id: number): Promise<void> {
-        this.executeOnDs('lk_uninhabitable_editor', { command: 'delete-by-id', id });
+        this.executeOnDs('lk_owntable_editor', { command: 'delete-by-id', id });
     }
 
     async updateCase(entry: CaseEntry): Promise<void> {
         // console.log('CaseEntry: ',entry)
         // console.log('allDay: ',typeof entry.allDay)
         try {
-            await this.executeOnDs('lk_uninhabitable_editor', {
+            await this.executeOnDs('lk_owntable_editor', {
                 command: 'update-by-id',
                 ...entry,
                 caseDate: format(entry.caseDate, 'yyyy-MM-dd'),
             });
         } catch (e) {
             console.error(e.exception.message);
-            throw new Error('Opdatering af kondemneringstabel fejlede');
+            throw new Error('Opdatering af tabel fejlede');
         }
     }
 }
